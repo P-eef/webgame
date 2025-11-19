@@ -5,3 +5,6 @@ body {
 	background-color: antiquewhite;
 	padding: 1%;
 }
+canvas {
+	display: none;
+}

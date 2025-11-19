@@ -1,3 +1,4 @@
+//Draws the squares based off of the 2d array of 1's and 0's fed to it
 function lightsOutDraw( lightsOutGrid ) {
 	const canvas = document.getElementById( "lightsOutCanvas" );
 	const context = canvas.getContext( "2d" );
@@ -18,6 +19,7 @@ function lightsOutDraw( lightsOutGrid ) {
 		}
 	}
 }
+//Checks the lightsOutGrid and tells whether or not the grid is solved
 function lightsOutCheckWin( lightsOutGrid ) {
 	let offCount = 0;
 	
@@ -35,9 +37,9 @@ function lightsOutCheckWin( lightsOutGrid ) {
 	}
 	else { return false; }
 
-	
-
 }
+
+//Switches adjacent and clicked squares on mouse click
 function lightsOutSwitch( lightsOutGrid, x, y ) {
 	for (let i = -1; i < 2; i++ ) {
 		for(let j = -1; j < 2; j++ ) {
@@ -56,8 +58,9 @@ function lightsOutSwitch( lightsOutGrid, x, y ) {
 		}
 	}
 }
-//function gathered from geeksforgeeks: 
+//functionality gathered from geeksforgeeks: 
 //	https://www.geeksforgeeks.org/javascript/how-to-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
+//helper gets click coordinates and converts to usable grid squares.
 function lightsOutCoord( canvas, event, lightsOutGrid ) {
 	let rect = canvas.getBoundingClientRect();
 	let x = event.clientX - rect.left;
@@ -85,6 +88,7 @@ function lightsOutCoord( canvas, event, lightsOutGrid ) {
 	lightsOutDraw( lightsOutGrid );
 }
 
+//Helper that finds clicked square
 function lightsOutClick( lightsOutGrid, canvas ) {
 	let canvasElem = document.getElementById( "lightsOutCanvas" );
 	let returnArray = [ -1, -1 ];
@@ -93,9 +97,11 @@ function lightsOutClick( lightsOutGrid, canvas ) {
     	});
 }
 
-function main() {
-	
+//Main
+function lightsOutMain() {
+
 	const canvas = document.getElementById( "lightsOutCanvas" );
+
 	let lightsOutGrid = [
 		[ 0, 0, 0, 0, 0 ],
 		[ 0, 0, 1, 0, 0 ],
@@ -115,4 +121,4 @@ function main() {
 
 	
 }
-main();
+lightsOutMain();
