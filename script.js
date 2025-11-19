@@ -68,4 +68,26 @@ function main() {
 	
 }
 
-main();
+function startGame() {
+	window.addEventListener("DOMContentLoaded", () => {
+	    const startButton = document.getElementById("start-btn");
+	    const startScreen = document.querySelector(".start-screen");
+	    const wrapper = document.getElementById("wrapper");
+	    const gameCanvas = document.getElementById("gameCanvas");
+	    // START GAME LOGIC
+	    startButton.addEventListener("click", () => {
+	        // 1. Fade out the start screen
+	        startScreen.classList.add("fade-out");
+	        // 2. After fade animation, remove start screen & show game
+	        setTimeout(() => {
+	            startScreen.style.display = "none"; // fully hide start screen
+	            wrapper.classList.add("show");      // reveal game wrapper
+	            gameCanvas.classList.add("show");   // fade-in canvas
+	        }, 1000); // 1 second = // CSS transition time
+	    });
+	});
+	
+	main();
+}
+
+startGame();
