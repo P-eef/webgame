@@ -47,7 +47,7 @@ function main() {
 
 	document.addEventListener( 'keydown', function( event ) {
 		if (event.key == " " ) {
-			if ( !((player.x < (door.x - 50)) || (player.x > (door.x + door.width + 50)) ) ) {
+			if ( player1.x > door.x - 30 && player1.x < door.x + door.width + 30 ) {
 				lightsOutCanvas.style.display = "block";
 			}
 		}
