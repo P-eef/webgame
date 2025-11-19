@@ -21,6 +21,8 @@
 /* ===================== */
 
 
+
+/* GLOBAL */
 html, body {
 	width: 100%;
 	height: 100%;
@@ -30,113 +32,101 @@ html, body {
 }
 
 
-
 /* START SCREEN */
 
 
 .start-screen {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+    background-image: url("assets/hotel.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	background-color: black;
+    display: flex;
+	justify-content: center;
+	align-items: center;
+    z-index: 50;
+    opacity: 1;
+	transition: opacity 1s ease, transform 1s ease;
+}
 
-  /* Make entire image visible on all screens */
-  background-image: url("assets/hotel.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  background-color: black; /* fills empty space */
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  z-index: 50;
+#start-screen.fade-out {
+	opacity: 0;
+	transform: translateY(-40px);
+	pointer-events: none;
 }
 
 /* GLASS BOX */
 .start-box {
 	margin-bottom: 7%;
-    background: rgba(255, 255, 255, 0.15); /* translucent */
-    backdrop-filter: blur(12px);           /* glass effect */
-    border-radius: 18px;
-    padding: 40px 50px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(12px);
+	border-radius: 18px;
+	padding: 40px 50px;
+	text-align: center;
+	box-shadow: 0 0 25px rgba(0,0,0,0.5);
 }
 
-/* TITLE */
 .start-box h1 {
-    font-size: 2.6rem;
-    color: #fff;
-    margin-bottom: 12px;
-    text-shadow: 0 0 12px black;
+	font-size: 2.6rem;
+	color: #fff;
+	margin-bottom: 12px;
+	text-shadow: 0 0 12px black;
 }
 
-/* SUBTITLE */
 .start-box p {
-    font-size: 1.2rem;
-    color: #e0e0e0;
-    margin-bottom: 25px;
+	font-size: 1.2rem;
+	color: #e0e0e0;
+	margin-bottom: 25px;
 }
 
-/* BUTTON */
 .start-btn {
-    padding: 12px 28px;
-    border: none;
-    background: #8a0000;
-    color: white;
-    font-size: 1.2rem;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s ease;
+	padding: 12px 28px;
+	border: none;
+	background: #8a0000;
+	color: white;
+	font-size: 1.2rem;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: 0.2s ease;
 }
 
 .start-btn:hover {
-    background: #b10000;
-    transform: translateY(-2px);
+	background: #b10000;
+	transform: translateY(-2px);
 }
 
 
-/* WRAPPER (GAME CONTENT)*/
+/* WRAPPER / CANVAS */
+
 
 #wrapper {
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	color: white;
-	padding-top: 20px;
+	display: none; /* hidden until start */
 }
 
-#wrapper.hidden {
-	display: none;
+#wrapper.show {
+	display: block;
 }
-
-#wrapper h1 {
-	font-size: 36px;
-	margin-bottom: 15px;
-}
-
-#wrapper p {
-	width: 80%;
-	margin: 0 auto 20px auto;
-	line-height: 1.4;
-}
-
-
-
-/* GAME CANVAS */
 
 #gameCanvas {
 	display: block;
 	margin: 20px auto;
 	background-color: #333;
 	image-rendering: pixelated;
+
+	opacity: 0;
+	transition: opacity 1.5s ease;
 }
 
-
+#gameCanvas.show {
+	opacity: 1;
+}
 
 /* DIALOGUE BOX */
+
 
 #dialog-box {
 	position: absolute;
@@ -145,94 +135,151 @@ html, body {
 	transform: translateX(-50%);
 	width: 85%;
 	max-width: 900px;
+
 	background: rgba(0,0,0,0.75);
 	border: 2px solid white;
-	border-radius: 10px;
-	padding: 20px;
+	border-radius: 12px;
+
+	padding: 22px 24px;
 	color: white;
 	font-size: 20px;
-	z-index: 50;
+	z-index: 100;
+
+	opacity: 0;
+	pointer-events: none;
+
+	transition: opacity 0.6s ease;
 }
 
-.hidden {
-	display: none;
+
+/* ========================= */
+/* PUZZLE OVERLAYS (HTML MODE) */
+/* ========================= */
+
+/*.puzzle {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    color: white;
+    z-index: 60;
+
+    display: none; 
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 40px 20px;
+    overflow-y: auto;
+
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 
-
-/* PUZZLE SCREENS*/
-
-.puzzle {
-	position: absolute;
-	inset: 0;
-	background: rgba(0,0,0,0.9);
-	color: white;
-	z-index: 40;
-	text-align: center;
-	padding: 40px;
-	overflow-y: auto;
+.puzzle.active {
+    display: flex;
+    opacity: 1;
 }
+
 
 .puzzle h2 {
-	font-size: 36px;
-	margin-bottom: 20px;
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px black;
 }
 
-.close-puzzle {
-	margin-top: 20px;
-	background: crimson;
-	color: white;
-	padding: 12px 25px;
-	border: none;
-	border-radius: 8px;
-	font-size: 20px;
-	cursor: pointer;
-}
-
-.close-puzzle:hover {
-	background: #ff5577;
-}
 
 #slide-grid,
 #riddle-area,
 #lights-grid,
 #scramble-letters {
-	margin: 20px auto;
-	width: 80%;
-	min-height: 300px;
-	background: rgba(255,255,255,0.1);
-	border: 2px solid white;
-	border-radius: 10px;
-}
-
-
-
-/* EXTRA CANVAS (HIDE)  */
-
-#lightsOutCanvas {
-	display: none; 
-}
-
-
-/* For larger desktops: allow slight zoom */
-@media (min-width: 1280px) {
-  #start-screen {
-    background-size: cover; /* fill entire screen elegantly */
-  }
-}
-
-/* Tablets (768px–1024px): adjust text & layout */
-@media (max-width: 1024px) {
-  .start-box {
     width: 85%;
-    padding: 30px 25px;
-  }
+    max-width: 900px;
+    min-height: 300px;
 
-  .start-box h1 {
-    font-size: 2rem;
-  }
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid white;
+    border-radius: 12px;
 
-  .start-box p {
-    font-size: 1rem;
-  }
+    margin: 20px auto;
+    padding: 20px;
 }
+
+
+.close-puzzle {
+    margin-top: 25px;
+    padding: 14px 32px;
+
+    background: #8a0000;
+    color: white;
+
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.close-puzzle:hover {
+    background: #b10000;
+    transform: translateY(-2px);
+}
+*/
+
+#dialog-box.active {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+#dialog-close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	background: transparent;
+	border: none;
+	color: white;
+	font-size: 22px;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+#dialog-close:hover {
+	color: #ff6666;
+	transform: scale(1.2);
+}
+
+/* text spacing */
+#dialog-text {
+	margin-right: 40px;
+	line-height: 1.4;
+}
+
+
+/* RESPONSIVE */
+
+
+@media (min-width: 1280px) {
+	#start-screen {
+		background-size: cover;
+	}
+}
+
+@media (max-width: 1024px) {
+	.start-box {
+		width: 85%;
+		padding: 30px 25px;
+	}
+
+	.start-box h1 {
+		font-size: 2rem;
+	}
+
+	.start-box p {
+		font-size: 1rem;
+	}
+}
+
+
+
