@@ -7,8 +7,25 @@
 	<link rel = "stylesheet" type = "text/css" href = "style.css">
 </head>
 <body>
-	<div id="wrapper">
-		<h1> Midnight Lodging Hotel </h1>
+       
+
+       <!-- START SCREEN -->
+
+	<div class="start-screen">
+    <div class="start-box">
+        <h1>Midnight Lodging Hotel</h1>
+        <p>You shouldn’t have checked in…</p>
+        <button class="start-btn">Start Game</button>
+    </div>
+</div>
+
+
+
+       <!-- GAME CONTENT  -->
+
+	<div id="wrapper" class="hidden">
+		<!-- do we want to keep this h1 ? -->
+		<h1> Midnight Lodging Hotel </h1>  
 
 		<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -22,6 +39,47 @@
 		<canvas id="lightsOutCanvas" width="800" height="800"
 		style="background-color:#aaa ; display: block; margin: 5% auto;"></canvas>
 	</div>
+
+     
+
+	<!-- DIALOGUE BOX (BOTTOM) -->
+	
+	<div id="dialog-box" class="hidden">
+		<p id="dialog-text"></p>
+	</div>
+
+	<!-- PUZZLE SCREENS (HTML) -->
+	
+
+	<!-- 4TH FLOOR — SLIDE PUZZLE -->
+	<div id="puzzle-slide" class="puzzle hidden">
+		<h2>Fourth Floor Puzzle</h2>
+		<div id="slide-grid"></div>
+		<button class="close-puzzle">Exit Puzzle</button>
+	</div>
+
+	<!-- 3RD FLOOR — RIDDLE REARRANGE -->
+	<div id="puzzle-riddle" class="puzzle hidden">
+		<h2>Third Floor Puzzle</h2>
+		<div id="riddle-area"></div>
+		<button class="close-puzzle">Exit Puzzle</button>
+	</div>
+
+	<!-- 2ND FLOOR — LIGHTS OUT -->
+	<div id="puzzle-lights" class="puzzle hidden">
+		<h2>Electrical Panel</h2>
+		<div id="lights-grid"></div>
+		<button class="close-puzzle">Exit Puzzle</button>
+	</div>
+
+	<!-- 1ST FLOOR — WORD SCRAMBLE -->
+	<div id="puzzle-scramble" class="puzzle hidden">
+		<h2>Word Scramble</h2>
+		<div id="scramble-letters"></div>
+		<button class="close-puzzle">Exit Puzzle</button>
+	</div>
+
+
 	<script src = "script.js"></script>
 	<script src = "lightsOut.js"></script>
 </body>
