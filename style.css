@@ -7,19 +7,6 @@
 	box-sizing: border-box;
 }
 
-/*body {
-	background-color: blue;
-}
-#wrapper {
-	background-color: antiquewhite;
-	padding: 1%;
-}*/
-
-
-
-
-
-
 /* GLOBAL */
 html, body {
 	width: 100%;
@@ -270,3 +257,5 @@ html, body {
 		font-size: 1rem;
 	}
 }
+
+
