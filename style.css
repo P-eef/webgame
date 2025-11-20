@@ -259,3 +259,19 @@ html, body {
 }
 
 
+/*canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#gameCanvas {
+    z-index: 10;
+}
+
+#lightsOutCanvas {
+    z-index: 5; 
+    display: none; 
+}*/
+
+
