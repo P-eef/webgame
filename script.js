@@ -39,8 +39,8 @@ function main() {
 
 
 	
-	let player1 = new player( 75, 500, 50, 50, "red"  );
-	let door = new player( 700, 350, 150, 75, "brown" );
+	let player1 = new player( 75, 300, 50, 50, "red"  );
+	let door = new player( 700, 150, 150, 75, "brown" );
 
 	drawEntity( player1, mainCanvas );
 	drawEntity( door, mainCanvas );
@@ -86,7 +86,7 @@ function startGame() {
 	        }, 1000); // 1 second = // CSS transition time
 	    });
 	});
-	
+
 	main();
 }
 
