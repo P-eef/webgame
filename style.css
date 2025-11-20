@@ -1,4 +1,3 @@
-
 /* RESET                 */
 
 * {
@@ -13,7 +12,7 @@ html, body {
 	height: 100%;
 	background: black;
 	font-family: Arial, sans-serif;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 
@@ -173,8 +172,8 @@ html, body {
 
 /* PUZZLE OVERLAYS  */
 
-
 /*
+
 .puzzle {
 	position: fixed;
 	inset: 0;
@@ -271,7 +270,7 @@ html, body {
 
 #lightsOutCanvas {
     z-index: 5; 
-    display: none; 
+   
 }*/
 
 
