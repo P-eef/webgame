@@ -1,276 +1,253 @@
-/* RESET                 */
-
+/* RESET */
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* GLOBAL */
 html, body {
-	width: 100%;
-	height: 100%;
-	background: black;
-	font-family: Arial, sans-serif;
-	/*overflow: hidden;*/
+    width: 100%;
+    height: 100%;
+    background: black;
+    font-family: Arial, sans-serif;
+    /*overflow: hidden; I have this commented out for now. Once all puzzles are done, I will uncommneted and eveything will fit inside the screen without
+    scrolling */
 }
 
 
-
-/* START SCREEN  */
+/* START SCREEN */
 
 
 .start-screen {
-	position: fixed;
-	inset: 0;
-	width: 100vw;
-	height: 100vh;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
     background-image: url("assets/hotel.png");
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
-	background-color: black;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; /* shows full image */
+    background-color: black;
+
     display: flex;
-	justify-content: center;
-	align-items: center;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 1;
     z-index: 50;
-	opacity: 1;
     transition: opacity 1s ease, transform 1s ease;
 }
 
-
 .start-screen.fade-out {
-	opacity: 0;
-	transform: translateY(-40px);
-	pointer-events: none;
+    opacity: 0;
+    transform: translateY(-40px);
+    pointer-events: none;
 }
-
 
 /* GLASS BOX */
 .start-box {
-	margin-bottom: 7%;
-	background: rgba(255, 255, 255, 0.15);
-	backdrop-filter: blur(12px);
-	border-radius: 18px;
-	padding: 40px 50px;
-	text-align: center;
-	box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    margin-bottom: 7%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    padding: 40px 50px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
 }
 
 .start-box h1 {
-	font-size: 2.6rem;
-	color: #fff;
-	margin-bottom: 12px;
-	text-shadow: 0 0 12px black;
+    font-size: 2.6rem;
+    color: #fff;
+    margin-bottom: 12px;
+    text-shadow: 0 0 12px black;
 }
 
 .start-box p {
-	font-size: 1.2rem;
-	color: #e0e0e0;
-	margin-bottom: 25px;
+    font-size: 1.2rem;
+    color: #eaeaea;
+    margin-bottom: 25px;
 }
 
 .start-btn {
-	padding: 12px 28px;
-	border: none;
-	background: #8a0000;
-	color: white;
-	font-size: 1.2rem;
-	border-radius: 10px;
-	cursor: pointer;
-	transition: 0.2s ease;
+    padding: 12px 28px;
+    background: #8a0000;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .start-btn:hover {
-	background: #b10000;
-	transform: translateY(-2px);
+    background: #b10000;
+    transform: translateY(-2px);
 }
 
 
-
-/* WRAPPER / CANVAS */
+/* GAME AREA */
 
 
 #wrapper {
-	display: none; /* hidden until Start */
+    width: 100%;
+    height: 100%;
+    display: none;
+    margin-top: 0.5%;
 }
 
 #wrapper.show {
-	display: block;
+    display: block;
 }
 
-#gameCanvas {
-	display: block;
-	margin: 20px auto;
-	background-color: #333;
-	image-rendering: pixelated;
+canvas {
+    display: block;
+    margin: 0 auto;
+    image-rendering: pixelated;
+}
 
-	opacity: 0;
-	transition: opacity 1.5s ease;
+/* MAIN GAME CANVAS */
+#gameCanvas {
+    background: #333;
+    width: 1200px;
+    height: 600px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
 }
 
 #gameCanvas.show {
-	opacity: 1;
+    opacity: 1;
 }
 
+/* PUZZLE CANVASES */
+/* PUZZLE CANVASES */
+/* PUZZLE CANVASES EXACT SIZE */
+#lightsOutCanvas,
+#slidePuzzleCanvas,
+#riddleCanvas,
+#wordScrambleCanvas {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 1200px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+
+    background: rgba(0,0,0,0.90);
+    border: 2px solid white;
+    border-radius: 12px;
+
+    display: none;
+}
+
+#lightsOutCanvas { z-index: 20; }
+#slidePuzzleCanvas { z-index: 21; }
+#riddleCanvas { z-index: 22; }
+#wordScrambleCanvas { z-index: 23; }
 
 
-/* DIALOGUE BOX */
+
+
+
+/* DIALOG BOX */
 
 
 #dialog-box {
-	position: absolute;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 85%;
-	max-width: 900px;
+    width: 1200px;
+    background: rgba(0,0,0,0.85);
+    border: 2px solid white;
+    border-radius: 12px;
+    padding: 18px 24px;
+    font-size: 20px;
+    color: white;
 
-	background: rgba(0,0,0,0.75);
-	border: 2px solid white;
-	border-radius: 12px;
+    position: absolute;
+    top: calc(40% + 330px);   /* sits under puzzle */
+    left: 50%;
+    transform: translateX(-50%);
 
-	padding: 22px 24px;
-	color: white;
-	font-size: 20px;
-	z-index: 100;
-
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 0.6s ease;
+    display: none;
+    z-index: 30;
 }
+
+
+
+
+#dialog-close {
+    float: right;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
 
 #dialog-box.active {
-	opacity: 1;
-	pointer-events: auto;
+    opacity: 1;
+    pointer-events: auto;
 }
 
-/* X button */
-#dialog-close {
-	position: absolute;
-	top: 8px;
-	right: 12px;
-	background: transparent;
-	border: none;
-	color: white;
-	font-size: 22px;
-	cursor: pointer;
-	transition: 0.2s ease;
+/* UNIVERSAL PUZZLE EXIT BUTTON */
+
+#puzzle-exit {
+    position: absolute;
+    top: 4%;
+    right: 12%;
+    width: 60px;
+    height: 60px;
+
+    background: crimson;
+    border: 3px solid white;
+    border-radius: 12px;
+
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+
+    display: none;   /* hidden until puzzle opens */
+    z-index: 1000;
+
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-#dialog-close:hover {
-	color: #ff6666;
-	transform: scale(1.2);
-}
-
-#dialog-text {
-	margin-right: 40px;
-	line-height: 1.4;
+#puzzle-exit:hover {
+    background: #ff4d4d;
+    transform: scale(1.08);
 }
 
 
 
-/* PUZZLE OVERLAYS  */
 
-/*
-
-.puzzle {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.85);
-	backdrop-filter: blur(6px);
-	color: white;
-	z-index: 60;
-
-	display: none;
-	flex-direction: column;
-	align-items: center;
-	padding: 40px 20px;
-
-	opacity: 0;
-	transition: opacity 0.5s ease;
+/* RESPONSIVE SMALLER SCREENS */
+@media (max-width: 1280px) {
+    #gameCanvas,
+    #lightsOutCanvas,
+    #slidePuzzleCanvas,
+    #riddleCanvas,
+    #wordScrambleCanvas,
+    #dialog-box {
+        width: 95%;
+        height: auto;
+    }
 }
-
-.puzzle.active {
-	display: flex;
-	opacity: 1;
-}
-
-.puzzle h2 {
-	font-size: 2.4rem;
-	margin-bottom: 20px;
-	text-shadow: 0 0 10px black;
-}
-
-#slide-grid,
-#riddle-area,
-#lights-grid,
-#scramble-letters {
-	width: 85%;
-	max-width: 900px;
-	min-height: 300px;
-
-	background: rgba(255,255,255,0.08);
-	border: 2px solid white;
-	border-radius: 12px;
-
-	margin: 20px auto;
-	padding: 20px;
-}
-
-.close-puzzle {
-	margin-top: 25px;
-	padding: 14px 32px;
-
-	background: #8a0000;
-	color: white;
-
-	font-size: 1.2rem;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-
-	transition: 0.25s ease;
-}
-
-.close-puzzle:hover {
-	background: #b10000;
-	transform: translateY(-2px);
-}
-*/
-
-
 
 
 @media (max-width: 1024px) {
-	.start-box {
-		width: 85%;
-		padding: 30px 25px;
-	}
-
-	.start-box h1 {
-		font-size: 2rem;
-	}
-
-	.start-box p {
-		font-size: 1rem;
-	}
+    #lightsOutCanvas,
+    #slidePuzzleCanvas,
+    #riddleCanvas,
+    #wordScrambleCanvas {
+        width: 90vw;
+        height: auto;
+        aspect-ratio: 2 / 1;
+    }
 }
 
 
-/*canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
 
-#gameCanvas {
-    z-index: 10;
-}
 
-#lightsOutCanvas {
-    z-index: 5; 
-   
-}*/
 
 

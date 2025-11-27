@@ -4,11 +4,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Web Game </title>
-	<link rel = "stylesheet" type = "text/css" href = "style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
-       
 
+<body>
 
 <!-- START SCREEN -->
 <div class="start-screen">
@@ -20,48 +19,57 @@
 </div>
 
 <!-- GAME CONTENT -->
-<div id="wrapper">
-	<canvas id="gameCanvas" width="1200" height="400"></canvas>
-	<canvas id="lightsOutCanvas" width="800" height="800"></canvas>
+<div id="wrapper" class="hidden">
+
+    <!-- MAIN GAME CANVAS -->
+    <canvas id="gameCanvas" width="1200" height="600"></canvas>
+
+    <!-- PUZZLE CANVASES -->
+    <canvas id="lightsOutCanvas" width="1200" height="600"></canvas>
+    <canvas id="slidePuzzleCanvas" width="1200" height="600"></canvas>
+    <canvas id="riddleCanvas" width="1200" height="600"></canvas>
+    <canvas id="wordScrambleCanvas" width="1200" height="600"></canvas>
+
 </div>
 
-<!-- DIALOGUE BOX (FADE IN/OUT) -->
+<!-- UNIVERSAL PUZZLE EXIT BUTTON -->
+<button id="puzzle-exit">✕</button>
+
+<!-- DIALOGUE BOX -->
 <div id="dialog-box">
     <button id="dialog-close">✕</button>
-	<p id="dialog-text"></p>
+    <p id="dialog-text"></p>
 </div>
 
-<!-- PUZZLE OVERLAYS (COMMENTED OUT FOR NOW) -->
-
-
+<!-- PUZZLE OVERLAY STRUCTURES - KEPT FOR LATER USE -->
 <div id="puzzle-slide" class="puzzle">
 	<h2>Fourth Floor Puzzle</h2>
 	<div id="slide-grid"></div>
-	<button class="close-puzzle">Exit Puzzle</button>
 </div>
 
 <div id="puzzle-riddle" class="puzzle">
 	<h2>Third Floor Puzzle</h2>
 	<div id="riddle-area"></div>
-	<button class="close-puzzle">Exit Puzzle</button>
 </div>
 
 <div id="puzzle-lights" class="puzzle">
 	<h2>Electrical Panel</h2>
 	<div id="lights-grid"></div>
-	<button class="close-puzzle">Exit Puzzle</button>
 </div>
 
 <div id="puzzle-scramble" class="puzzle">
 	<h2>Word Scramble</h2>
 	<div id="scramble-letters"></div>
-	<button class="close-puzzle">Exit Puzzle</button>
 </div>
 
+<!-- SCRIPT FILES -->
+<script src="script.js"></script>
+<script src="lightsOut.js"></script>
+<!-- 
+<script src="slidePuzzle.js"></script>
+<script src="riddle.js"></script>
+<script src="scramble.js"></script>
+-->
 
-
-
-	<script src = "script.js"></script>
-	<script src = "lightsOut.js"></script>
 </body>
 </html>
