@@ -223,6 +223,45 @@ canvas {
     transform: scale(1.08);
 }
 
+/* RESULT OVERLAY — FOR WIN / LOSE */
+#result-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 9999;
+    color: white;
+}
+
+#result-overlay.show {
+    display: flex;
+}
+
+#result-overlay h2 {
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+}
+
+#result-overlay p {
+    font-size: 1.4rem;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+#result-overlay.win {
+    border: 4px solid #24ff24;
+    box-shadow: 0 0 40px #24ff24;
+}
+
+#result-overlay.lose {
+    border: 4px solid #ff2424;
+    box-shadow: 0 0 40px #ff2424;
+}
+
 
 
 
