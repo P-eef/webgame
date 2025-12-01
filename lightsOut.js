@@ -1,124 +1,90 @@
-//Draws the squares based off of the 2d array of 1's and 0's fed to it
-function lightsOutDraw( lightsOutGrid ) {
-	const canvas = document.getElementById( "lightsOutCanvas" );
-	const context = canvas.getContext( "2d" );
+/* LIGHTS OUT PUZZLE — FIXED TO WORK WITH UNIVERSAL EXIT  Canvas size = 1200 × 600*/
 
-	const boxLen = ( canvas.height / 5 ) - 10;
-	const gridSize = canvas.height / 5;
+const lightsCanvas = document.getElementById("lightsOutCanvas");
+const lightsCtx = lightsCanvas.getContext("2d");
 
-	
-	for (let i = 0; i < 5; i++ ) {
-		for (let j = 0; j < 5; j++ ) {
-			if ( lightsOutGrid[i][j] == 0 ) {
-				context.fillStyle = "blue";
-			}
-			else if ( lightsOutGrid[i][j] == 1 ) {
-				context.fillStyle = "yellow";
-			}
-			context.fillRect( i * gridSize + 5, j * gridSize + 5, boxLen, boxLen );
-		}
-	}
-}
-//Checks the lightsOutGrid and tells whether or not the grid is solved
-function lightsOutCheckWin( lightsOutGrid ) {
-	let offCount = 0;
-	
+// 5×5 grid
+let grid = [
+    [0,1,1,1,0],
+    [1,0,1,0,1],
+    [1,0,0,0,1],
+    [0,1,1,1,0],
+    [0,0,1,0,0]
+];
 
-	for (let i = 0; i < 5; i++ ) {
-		for(let j = 0; j < 5; j++ ) {
-			if ( lightsOutGrid[i][j] == 0 ) {
-				offCount++;
-			}
-		}
-	}
+// Grid sizing (fills exactly the canvas)
+const COLS = 5;
+const ROWS = 5;
+const cellWidth = lightsCanvas.width / COLS;   // 1200 ÷ 5 = 240
+const cellHeight = lightsCanvas.height / ROWS; // 600 ÷ 5 = 120
 
-	if ( offcount == 25 ) {
-		return true;
-	}
-	else { return false; }
 
+/* DRAW PUZZLE GRID */
+function lightsOutDraw() {
+    lightsCtx.clearRect(0, 0, lightsCanvas.width, lightsCanvas.height);
+
+    for (let x = 0; x < COLS; x++) {
+        for (let y = 0; y < ROWS; y++) {
+            lightsCtx.fillStyle = grid[x][y] ? "yellow" : "rgb(0,70,160)";
+            lightsCtx.fillRect(
+                x * cellWidth,
+                y * cellHeight,
+                cellWidth - 5,
+                cellHeight - 5
+            );
+        }
+    }
 }
 
-//Switches adjacent and clicked squares on mouse click
-function lightsOutSwitch( lightsOutGrid, x, y ) {
-	for (let i = -1; i < 2; i++ ) {
-		for(let j = -1; j < 2; j++ ) {
-			if ( (i == -1 && j == -1) || (i == 1 && j == 1) || (i == -1 && j == 1) || (i == 1 && j == -1 ) ){
-				continue;
-			}
-			if ( x + i == -1 || x + i == 5 ) {
-				continue;
-			}
-			if ( lightsOutGrid[x + i][y + j] == 0 ) {
-				lightsOutGrid[x + i][y + j] = 1;
-			}
-			else if ( lightsOutGrid[x + i][y + j] == 1 ) {
-				lightsOutGrid[x + i][y + j] = 0;
-			}
-		}
-	}
-}
-//functionality gathered from geeksforgeeks: 
-//	https://www.geeksforgeeks.org/javascript/how-to-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
-//helper gets click coordinates and converts to usable grid squares.
-function lightsOutCoord( canvas, event, lightsOutGrid ) {
-	let rect = canvas.getBoundingClientRect();
-	let x = event.clientX - rect.left;
-	let y = event.clientY - rect.top;
-	let i = -1;
-	let j = -1;
 
-	if ( x < 160 ) { i = 0; }
-	else if ( 160 < x && x < 320 ) { i = 1;  }
-	else if ( 320 < x && x < 480 ) { i = 2; }
-	else if ( 480 < x && x < 640 ) { i = 3; }
-	else if ( 640 < x && x < 800 ) { i = 4; }
+/* TOGGLE TILE + NEIGHBORS */
+function toggle(x, y) {
+    const neighbors = [
+        [0,0], [1,0], [-1,0], [0,1], [0,-1]
+    ];
 
-	if ( y < 160 ) { j = 0; }
-	else if ( 160 < y && y < 320 ) { j = 1; }
-	else if ( 320 < y && y < 480 ) { j = 2; }
-	else if ( 480 < y && y < 640 ) { j = 3; }
-	else if ( 640 < y && y < 800 ) { j = 4; }
-
-	
-	let array = [ i, j ];
-	console.log( "lightsOutCoord " + array );
-
-	lightsOutSwitch( lightsOutGrid, i, j );
-	lightsOutDraw( lightsOutGrid );
+    neighbors.forEach(([dx, dy]) => {
+        const nx = x + dx, ny = y + dy;
+        if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+            grid[nx][ny] = grid[nx][ny] ? 0 : 1;
+        }
+    });
 }
 
-//Helper that finds clicked square
-function lightsOutClick( lightsOutGrid, canvas ) {
-	let canvasElem = document.getElementById( "lightsOutCanvas" );
-	let returnArray = [ -1, -1 ];
-	canvasElem.addEventListener("mousedown", function (e) {
-            lightsOutCoord(canvasElem, e, lightsOutGrid );
-    	});
+
+/* WIN CHECK */
+function checkWin() {
+    return grid.flat().every(v => v === 0);
 }
 
-//Main
-function lightsOutMain() {
 
-	const canvas = document.getElementById( "lightsOutCanvas" );
+/*  CLICK HANDLING */
+lightsCanvas.addEventListener("mousedown", e => {
+    const rect = lightsCanvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
 
-	let lightsOutGrid = [
-		[ 0, 0, 0, 0, 0 ],
-		[ 0, 0, 1, 0, 0 ],
-		[ 0, 1, 1, 1, 0 ],
-		[ 0, 0, 1, 0, 0 ],
-		[ 0, 0, 0, 0, 0 ]
-	]
+    // Convert click to grid coords
+    const gridX = Math.floor(mx / cellWidth);
+    const gridY = Math.floor(my / cellHeight);
+
+    // Toggle tiles
+    toggle(gridX, gridY);
+    lightsOutDraw();
+
+    // If solved
+    if (checkWin()) {
+        showDialogue("You solved the puzzle, and found an ELEVATOR KEYCARD!");
+        keyCard = 1;
+        setTimeout(() => {
+            closePuzzle("lightsOutCanvas");
+        }, 3000);
+    }
+});
 
 
-	lightsOutDraw( lightsOutGrid );
-	lightsOutClick( lightsOutGrid, canvas );
-
-	if ( lightsOutCheckWin ) {
-		console.log("WINNER");
-		return 0;
-	}
-
-	
+/* OPEN PUZZLE (triggered from script.js via openPuzzle()) */
+function openLightsOut() {
+    lightsOutDraw();
 }
-lightsOutMain();
+

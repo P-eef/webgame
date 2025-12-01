@@ -48,7 +48,8 @@ html, body {
 
 /* GLASS BOX */
 .start-box {
-    margin-bottom: 17%;
+    margin-bottom: -4%;
+    /*background: rgba(255, 255, 255, 0.15);*/
     background: rgba(60, 0, 0, 0.20); /* subtle dark red tint */
     backdrop-filter: blur(16px);
     padding: 1.5% 1.5%;
@@ -65,10 +66,10 @@ html, body {
     margin-bottom: 3%;
     text-shadow: 0 0 12px black;
     font-weight: bold;
- }
+}
 
 .start-box p {
-    font-size: 1em;
+    font-size: 1.2em;
     color: #eaeaea;
     margin-bottom: 2%;
     line-height: 1.6;
@@ -85,7 +86,6 @@ html, body {
     cursor: pointer;
     transition: 0.2s ease;
 }
-
 .start-btn:hover {
     background: #b10000;
     transform: translateY(-2px);
@@ -250,9 +250,6 @@ canvas {
         aspect-ratio: 2 / 1;
     }
 }
-
-
-
 
 
 
