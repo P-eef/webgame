@@ -48,27 +48,33 @@ html, body {
 
 /* GLASS BOX */
 .start-box {
-    margin-bottom: 7%;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    padding: 40px 50px;
+    margin-bottom: -4%;
+    /*background: rgba(255, 255, 255, 0.15);*/
+    background: rgba(60, 0, 0, 0.20); /* subtle dark red tint */
+    backdrop-filter: blur(16px);
+    padding: 1.5% 1.5%;
     border-radius: 18px;
     text-align: center;
     box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    width: 35%;
 }
+
 
 .start-box h1 {
-    font-size: 2.6rem;
-    color: #fff;
-    margin-bottom: 12px;
+    font-size: 2em;
+    color: #A2052C;
+    margin-bottom: 3%;
     text-shadow: 0 0 12px black;
-}
+    font-weight: bold;
+ }
 
 .start-box p {
-    font-size: 1.2rem;
+    font-size: 1.2em;
     color: #eaeaea;
-    margin-bottom: 25px;
+    margin-bottom: 2%;
+    line-height: 1.6;
 }
+
 
 .start-btn {
     padding: 12px 28px;
