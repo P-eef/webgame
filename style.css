@@ -48,7 +48,7 @@ html, body {
 
 /* GLASS BOX */
 .start-box {
-    margin-bottom: -4%;
+    margin-bottom: 18%;
     /*background: rgba(255, 255, 255, 0.15);*/
     background: rgba(60, 0, 0, 0.20); /* subtle dark red tint */
     backdrop-filter: blur(16px);
@@ -69,7 +69,7 @@ html, body {
 }
 
 .start-box p {
-    font-size: 1.2em;
+    font-size: 1em;
     color: #eaeaea;
     margin-bottom: 2%;
     line-height: 1.6;
