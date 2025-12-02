@@ -34,25 +34,27 @@ function moveEntity(entity, canvas, dir, speed) {
 function chaseEntity(chaser, chasey, canvas) {
     if (window.gameFrozen) return; //new
 
-    if (chaser.x > chasey.x) {
-        moveEntity(chaser, canvas, -1, 10);
-    }
-    else if (chaser.x < chasey.x - 250) {
-        moveEntity(chaser, canvas, 1, 10);
-    }
+    if ( keyCard == 0 ) {
+        if (chaser.x > chasey.x) {
+            moveEntity(chaser, canvas, -1, 10);
+        }
+        else if (chaser.x < chasey.x - 250) {
+            moveEntity(chaser, canvas, 1, 10);
+        }
 
-    //new
-    else {
-        closePuzzle("lightsOutCanvas");
+        //new
+        else {
+            closePuzzle("lightsOutCanvas");
 
-        showResultOverlay(
-            "You were caught by the wrathful spirit… your soul is now trapped in the Midnight Lodge.",
-            false
-        );
+            showResultOverlay(
+                "You were caught by the wrathful spirit… your soul is now trapped in the Midnight Lodge.",
+                false
+            );
 
-        window.gameFrozen = true;
-    }
+            window.gameFrozen = true;
+        }
     ////
+    }
 }
 
 
@@ -285,10 +287,12 @@ function animate(canvas, player, enemy) {
         player.x - 20, player.y - 70, player.image.width/4, player.image.height/4
     );
 
-    context.drawImage(
-        enemy.image, eSrcX, srcY, enemy.image.width/4, enemy.image.height/4,
-        enemy.x - 20, enemy.y, enemy.image.width/4, enemy.image.height/4
-    );
+    if ( keyCard == 0 ) {
+        context.drawImage(
+            enemy.image, eSrcX, srcY, enemy.image.width/4, enemy.image.height/4,
+            enemy.x - 20, enemy.y, enemy.image.width/4, enemy.image.height/4
+        );
+    }
 
     framesDrawn++;
     if (framesDrawn >= 20) {
