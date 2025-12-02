@@ -1,7 +1,5 @@
-
-
-
 let currentPuzzle = null;
+window.gameFrozen = false; //new
 
 /*  PLAYER CLASS */
 class Player {
@@ -11,6 +9,7 @@ class Player {
         this.height = height;
         this.width = width;
         this.image = image;
+        this.frozen = false; //new
     }
 }
 
@@ -21,6 +20,8 @@ function drawEntity(entity, canvas) {
 }
 
 function moveEntity(entity, canvas, dir, speed) {
+    if (window.gameFrozen) return;
+
     const ctx = canvas.getContext("2d");
     ctx.clearRect(entity.x, entity.y, entity.width, entity.height);
 
@@ -30,19 +31,82 @@ function moveEntity(entity, canvas, dir, speed) {
     drawEntity(entity, canvas);
 }
 
-function chaseEntity( chaser, chasey, canvas ) {
-    if ( chaser.x > chasey.x ) {
-        moveEntity( chaser, canvas, -1, 10 );
+function chaseEntity(chaser, chasey, canvas) {
+    if (window.gameFrozen) return; //new
+
+    if (chaser.x > chasey.x) {
+        moveEntity(chaser, canvas, -1, 10);
     }
-    else if ( chaser.x < chasey.x - 250 ) {
-        moveEntity( chaser, canvas, 1, 10);
+    else if (chaser.x < chasey.x - 250) {
+        moveEntity(chaser, canvas, 1, 10);
     }
+
+    //new
     else {
-        showDialogue( "You have been caught by a wrathful spirit. You are doomed now to wander the halls of the Midnight Lodge for eternity." );
+        closePuzzle("lightsOutCanvas");
+
+        showResultOverlay(
+            "You were caught by the wrathful spirit… your soul is now trapped in the Midnight Lodge.",
+            false
+        );
+
+        window.gameFrozen = true;
     }
+    ////
 }
 
-/* LIGHTS OUT PUZZLE FUNCTIONS*/
+
+function showResultOverlay(message, isWin) {
+    const overlay = document.getElementById("result-overlay");
+    const title = document.getElementById("result-title");
+    const msg = document.getElementById("result-message");
+    const winBtn = document.getElementById("win-close-btn");
+    const restartBtn = document.getElementById("restart-btn");
+
+    // Reset classes + hide buttons first
+    overlay.classList.remove("win", "lose");
+    winBtn.style.display = "none";
+    restartBtn.style.display = "none";
+
+    // WIN CONDITION
+    if (isWin) {
+        overlay.classList.add("win");
+        title.textContent = "YOU ESCAPED!";
+        winBtn.style.display = "inline-block";
+
+        // Auto close after 3s
+        setTimeout(() => {
+            overlay.classList.remove("show");
+        }, 3000);
+    }
+
+    // LOSE CONDITION
+    else {
+        overlay.classList.add("lose");
+        title.textContent = "YOU FAILED…";
+        restartBtn.style.display = "inline-block";
+    }
+
+    msg.textContent = message;
+    overlay.classList.add("show");
+
+    window.gameFrozen = false;
+}
+
+
+// Close button (WIN only)
+document.getElementById("win-close-btn").addEventListener("click", () => {
+    document.getElementById("result-overlay").classList.remove("show");
+});
+
+// Restart button → Reloads back to start page
+document.getElementById("restart-btn").addEventListener("click", () => {
+    window.location.reload();
+});
+
+//////
+
+/* LIGHTS OUT PUZZLE FUNCTIONS */
 
 function lightsOutDraw(grid) {
     const canvas = document.getElementById("lightsOutCanvas");
@@ -95,13 +159,27 @@ function lightsOutCoord(canvas, event, grid) {
 
     lightsOutSwitch(grid, x, y);
     lightsOutDraw(grid);
+
+    //new/////
+
+    if (lightsOutCheckWin(grid)) {
+        keyCard = 1;
+        closePuzzle("lightsOutCanvas");
+
+        showResultOverlay(
+            "You restored the power grid! The elevator is active. RUN before the spirit reaches you!",
+            true
+        );
+    }
 }
+
+////////
 
 function lightsOutClick(grid, canvas) {
     canvas.addEventListener("mousedown", e => lightsOutCoord(canvas, e, grid));
 }
 
-/*PUZZLE OPEN / CLOSE*/
+/* PUZZLE OPEN / CLOSE */
 
 let puzzleTimer = null;
 let puzzleTimeLeft = 60;
@@ -112,101 +190,117 @@ function startPuzzleTimer() {
     puzzleTimer = setInterval(() => {
         if (puzzleTimeLeft <= 0) {
             closePuzzle("lightsOutCanvas");
+
+            ////new////
+
+            showResultOverlay(
+                "You have been caught by a wrathful spirit. You are doomed now to wander the halls of the Midnight Lodge for eternity.",
+                false
+            );
+
+            window.gameFrozen = true;
         }
+
+        //////
+
         puzzleTimeLeft--;
     }, 1000);
 }
 
 function openPuzzle(id) {
+    if (window.gameFrozen) return; //new///////
+
     currentPuzzle = id;
 
     document.getElementById("gameCanvas").style.display = "none";
     document.getElementById(id).style.display = "block";
-
-    // SHOW EXIT BUTTON
     document.getElementById("puzzle-exit").style.display = "block";
 
-    // SHOW DIALOGUE
     if (id === "lightsOutCanvas") {
-        showDialogue("You open the door to find an old closet with some machine panel on a wallsafe labeled 'employees only'. INSTRUCTIONS....... click panels to switch them. Turn off all the lights.");
+        showDialogue("You open the door to find an old closet with a broken power grid panel. Turn off all the lights.");
     }
 
     startPuzzleTimer();
 }
-
 
 function closePuzzle(id) {
     clockSound.pause();
     document.getElementById(id).style.display = "none";
     document.getElementById("gameCanvas").style.display = "block";
 
-    // HIDE EXIT BUTTON
     document.getElementById("puzzle-exit").style.display = "none";
 
-    hideDialogue();  
+    hideDialogue();
     clearInterval(puzzleTimer);
     currentPuzzle = null;
 }
-
+///new////
 document.getElementById("puzzle-exit").addEventListener("click", () => {
-    if (currentPuzzle) {
+    if (currentPuzzle && !window.gameFrozen) {
         closePuzzle(currentPuzzle);
+        ///
     }
 });
 
-
-/* MAIN GAME LOGIC */
-
+// MAIN GAME LOGIC 
 //animation initializers
 let currentFrame = 0;
 let totalFrames = 4;
-let srcX = 0; let srcY = 0;
+let srcX = 0; 
+let srcY = 0;
 let pSrcX = 0;
 let eSrcX = 0;
 let framesDrawn = 0;
 const hallwayImage = new Image();
 hallwayImage.src = "assets/hallway2n&3rd.png";
 
-function animate( canvas, player, enemy ) {
+function animate(canvas, player, enemy) {
+    if (window.gameFrozen) return;
+    const context = canvas.getContext("2d");
 
-    const context = canvas.getContext( "2d" );
-    
     //Clear canvas every frame
-    context.clearRect( 0, 0, canvas.width, canvas.height );
-    requestAnimationFrame( function() {
-        animate( canvas, player, enemy );    
-    } );
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    //Sprite animation
+    requestAnimationFrame(() => animate(canvas, player, enemy));
+
+      //Sprite animation
     //1.) track frame of spritesheet
+
     currentFrame = currentFrame % totalFrames;
 
+
     //2.) get source coordinate from spritesheet
-    pSrcX = currentFrame * player.image.width/4;
-    eSrcX = currentFrame * enemy.image.width/4;
-    
-    //.3) draw hallway background first
-    context.drawImage( hallwayImage, 0, 0, hallwayImage.width, hallwayImage.height );
 
-    //4.) draw only the section of the spritesheet that is the current frame for player and enemy
-    context.drawImage( player.image, pSrcX, srcY, player.image.width/4, player.image.height/4,
-                        player.x-20, player.y-70, player.image.width/4, player.image.height/4  );
+    pSrcX = currentFrame * player.image.width / 4;
+    eSrcX = currentFrame * enemy.image.width / 4;
 
-    context.drawImage( enemy.image, eSrcX, srcY, enemy.image.width/4, enemy.image.height/4, 
-                        enemy.x-20, enemy.y, enemy.image.width/4, enemy.image.height/4 );
+     //.3) draw hallway background first
+
+    context.drawImage(hallwayImage, 0, 0, hallwayImage.width, hallwayImage.height);
+
+      //4.) draw only the section of the spritesheet that is the current frame for player and enemy
+
+    context.drawImage(
+        player.image, pSrcX, srcY, player.image.width/4, player.image.height/4,
+        player.x - 20, player.y - 70, player.image.width/4, player.image.height/4
+    );
+
+    context.drawImage(
+        enemy.image, eSrcX, srcY, enemy.image.width/4, enemy.image.height/4,
+        enemy.x - 20, enemy.y, enemy.image.width/4, enemy.image.height/4
+    );
+
     framesDrawn++;
-    if( framesDrawn >= 20 ) {
+    if (framesDrawn >= 20) {
         currentFrame++;
         framesDrawn = 0;
     }
-    
 }
 
 const clockSound = new Audio("assets/clock.mp3");
-    clockSound.loop = true;
+clockSound.loop = true;
 
 let keyCard = 0;
-
 const music = new Audio("assets/music.mp3");
 
 function mainGame() {
@@ -220,125 +314,120 @@ function mainGame() {
 
     const playerSpriteSheet = new Image();
     playerSpriteSheet.src = "assets/player-pressing.png";
+
     const enemySpriteSheet = new Image();
     enemySpriteSheet.src = "assets/ghost-1-sleeping.png";
-    const newSprite = new Image();
-    newSprite.src = "assets/ghost-1-attacking.png";
+
+    const attackingSprite = new Image();
+    attackingSprite.src = "assets/ghost-1-attacking.png";
+
     const walkSprite = new Image();
     walkSprite.src = "assets/player-walking.png";
-    
-    
-    
+
     const elevatorSound = new Audio("assets/elevator.mp3");
     const doorSound = new Audio("assets/door.mp3");
-
-    
 
     footstepSound = new Audio("assets/footsteps.mp3");
     footstepSound.loop = true;
 
-    let player = new Player( 900, 400, 50, 50, playerSpriteSheet  );
-    let door = new Player( 900, 150, 150, 75, "brown" );
-    let enemyplayer = new Player ( 0, 300, 60, 50, enemySpriteSheet );
+    let player = new Player(900, 400, 50, 50, playerSpriteSheet);
+    let door = new Player(900, 150, 150, 75, "brown");
+    let enemyplayer = new Player(0, 300, 60, 50, enemySpriteSheet);
 
     let grid = [
-        [0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0],
-        [0, 1, 1, 1, 0],
-        [0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0,0,0,0,0],
+        [0,0,1,0,0],
+        [0,1,1,1,0],
+        [0,0,1,0,0],
+        [0,0,0,0,0]
     ];
 
-    //drawEntity(player, gameCanvas);
+     //drawEntity(player, gameCanvas);
     //drawEntity(door, gameCanvas);
 
     //2.) Make sure to update the player on the gamestate first
-    animate( gameCanvas, player, enemyplayer );
 
-    
-    //3.) Initialize lights out grid before canvas needs opened
+    animate(gameCanvas, player, enemyplayer);
+
+     //3.) Initialize lights out grid before canvas needs opened
     lightsOutDraw(grid);
     lightsOutClick(grid, lightsCanvas);
 
-
     setTimeout(() => {
-                enemyplayer.image = newSprite;
+        //enemyplayer.image = newSrite;
+        enemyplayer.image = attackingSprite;   
+        setInterval(chaseEntity, 200, enemyplayer, player, gameCanvas);
+    }, 120000);
 
-                setInterval( chaseEntity, 200, enemyplayer, player, gameCanvas );
-            }, 120000 );
-    
-    
+        //4.) Check for player input
 
-    //4.) Check for player input
     document.addEventListener("keydown", function(event) {
+        if (window.gameFrozen) return;
+
         if (event.key === "ArrowLeft") {
             player.image = walkSprite;
             moveEntity(player, gameCanvas, -1, 5);
-            if( player.x <= 0 ) {
-                player.x = 0;
-            }
+            if (player.x <= 0) player.x = 0;
             footstepSound.play();
         }
+
         if (event.key === "ArrowRight") {
             player.image = walkSprite;
             moveEntity(player, gameCanvas, 1, 5);
-            if( player.x >= gameCanvas.width - player.width) {
+            if (player.x >= gameCanvas.width - player.width) {
                 player.x = gameCanvas.width - player.width;
             }
             footstepSound.play();
         }
 
-        // SPACE = interact
+         // SPACE = interact
+
         if (event.key === " ") {
-            //If the player is at the closet door
+             //If the player is at the closet door
             if (player.x > door.x - 100 && player.x < door.x + door.width + 30) {
                 openPuzzle("lightsOutCanvas");
                 doorSound.play();
                 clockSound.play();
-                setTimeout(() => {
-                    clockSound.pause();
-                }, 60000 );
+                setTimeout(() => clockSound.pause(), 60000);
             }
-            //If the player is at the elevator doors
-            if ( (player.x > 50 && player.x < 300) && keyCard == 1) {
+         //If the player is at the elevator doors
+            if ((player.x > 50 && player.x < 300) && keyCard === 1) {
                 elevatorSound.play();
-                setTimeout(() => {
-                    elevatorSound.pause();
-                }, 10000 );
+                setTimeout(() => elevatorSound.pause(), 10000);
                 music.pause();
-                showDialogue( "The keycard activates, allowing you out of this nightmare." );
 
+                showResultOverlay("The keycard activates… the elevator opens. You escape!", true); //new
             }
-
         }
     });
+
     document.addEventListener("keyup", function(event) {
-        if( event.key === "ArrowLeft" || event.key === "ArrowRight" ) {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
             player.image = playerSpriteSheet;
             footstepSound.pause();
         }
-    });
 
-    document.querySelectorAll(".close-puzzle").forEach(btn => {
-        btn.addEventListener("click", () => closePuzzle("lightsOutCanvas"));
+        ///new//
+
+        // document.querySelectorAll(".close-puzzle").forEach(btn => {
+        // btn.addEventListener("click", () => closePuzzle("lightsOutCanvas"));
+    
     });
 }
 
 
-/*  UNIVERSAL DIALOGUE BOX */
+/* Universal DIALOGUE BOX */
 function showDialogue(text) {
     const box = document.getElementById("dialog-box");
     const txt = document.getElementById("dialog-text");
 
     txt.textContent = text;
-
     box.style.display = "block";
     box.classList.add("active");
 }
 
 function hideDialogue() {
     const box = document.getElementById("dialog-box");
-
     box.classList.remove("active");
     box.style.display = "none";
 }
@@ -347,23 +436,17 @@ document.getElementById("dialog-close").addEventListener("click", hideDialogue);
 
 
 /* START GAME */
-
 function startGame() {
-    
     window.addEventListener("DOMContentLoaded", () => {
-        //1.) Initialize variables
-        
         const startButton = document.getElementById("start-btn");
         const startScreen = document.querySelector(".start-screen");
         const wrapper = document.getElementById("wrapper");
         const gameCanvas = document.getElementById("gameCanvas");
 
-        //2.) Check when start button is pressed
         startButton.addEventListener("click", () => {
             startScreen.classList.add("fade-out");
             music.play();
 
-            //3.) Wait for animation to play for game to start
             setTimeout(() => {
                 startScreen.style.display = "none";
                 wrapper.classList.add("show");
@@ -372,12 +455,10 @@ function startGame() {
             }, 1000);
 
             //4.) Start ghostly pursuit after a delay, now that game has started
-            
+
         });
     });
 }
 
 startGame();
-
-
 

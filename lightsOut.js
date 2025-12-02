@@ -73,14 +73,30 @@ lightsCanvas.addEventListener("mousedown", e => {
     lightsOutDraw();
 
     // If solved
-    if (checkWin()) {
-        showDialogue("You solved the puzzle, and found an ELEVATOR KEYCARD!");
-        keyCard = 1;
-        setTimeout(() => {
-            closePuzzle("lightsOutCanvas");
-        }, 3000);
-    }
+    /////new//////
+   if (checkWin()) {
+    keyCard = 1;
+
+    closePuzzle("lightsOutCanvas");
+
+    showResultOverlay(
+        "You restored the power grid! The elevator is active. RUN before the spirit reaches you!",
+        true
+    );
+}     //////
+
 });
+
+    // If solved
+//     if (checkWin()) {
+//         showDialogue("You solved the puzzle, and found an ELEVATOR KEYCARD!");
+//         keyCard = 1;
+//         setTimeout(() => {
+//             closePuzzle("lightsOutCanvas");
+//         }, 3000);
+//     }
+// });
+
 
 
 /* OPEN PUZZLE (triggered from script.js via openPuzzle()) */
