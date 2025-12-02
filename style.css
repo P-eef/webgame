@@ -262,6 +262,25 @@ canvas {
     box-shadow: 0 0 40px #ff2424;
 }
 
+#result-overlay button {
+    margin-top: 25px;
+    padding: 12px 26px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#win-close-btn {
+    background: #24ff24;
+    color: black;
+}
+
+#restart-btn {
+    background: #ff2424;
+    color: white;
+}
+
 
 
 
@@ -289,6 +308,9 @@ canvas {
         aspect-ratio: 2 / 1;
     }
 }
+
+
+
 
 
 

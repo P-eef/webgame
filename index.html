@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title> Web Game </title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Web Game </title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -42,33 +42,41 @@
     <p id="dialog-text"></p>
 </div>
 
+<!-- RESULT OVERLAY (WIN / LOSS) -->
 <div id="result-overlay">
     <div>
         <h2 id="result-title"></h2>
         <p id="result-message"></p>
+
+        <!-- WIN close button (auto hides after 3s too) -->
+        <button id="win-close-btn" style="display:none;">Close</button>
+
+        <!-- LOSE restart button -->
+        <button id="restart-btn" style="display:none;">Restart</button>
     </div>
 </div>
 
 
+
 <!-- PUZZLE OVERLAY STRUCTURES - KEPT FOR LATER USE -->
 <div id="puzzle-slide" class="puzzle">
-	<h2>Fourth Floor Puzzle</h2>
-	<div id="slide-grid"></div>
+    <h2>Fourth Floor Puzzle</h2>
+    <div id="slide-grid"></div>
 </div>
 
 <div id="puzzle-riddle" class="puzzle">
-	<h2>Third Floor Puzzle</h2>
-	<div id="riddle-area"></div>
+    <h2>Third Floor Puzzle</h2>
+    <div id="riddle-area"></div>
 </div>
 
 <div id="puzzle-lights" class="puzzle">
-	<h2>Electrical Panel</h2>
-	<div id="lights-grid"></div>
+    <h2>Electrical Panel</h2>
+    <div id="lights-grid"></div>
 </div>
 
 <div id="puzzle-scramble" class="puzzle">
-	<h2>Word Scramble</h2>
-	<div id="scramble-letters"></div>
+    <h2>Word Scramble</h2>
+    <div id="scramble-letters"></div>
 </div>
 
 <!-- SCRIPT FILES -->
