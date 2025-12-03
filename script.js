@@ -57,51 +57,54 @@ function chaseEntity(chaser, chasey, canvas) {
     }
 }
 
-
-function showResultOverlay(message, isWin) {
+function showResultOverlay(message, isWin, isFinal = false) {
     const overlay = document.getElementById("result-overlay");
     const title = document.getElementById("result-title");
     const msg = document.getElementById("result-message");
     const winBtn = document.getElementById("win-close-btn");
     const restartBtn = document.getElementById("restart-btn");
 
-    // Reset classes + hide buttons first
     overlay.classList.remove("win", "lose");
     winBtn.style.display = "none";
     restartBtn.style.display = "none";
 
-    // WIN CONDITION
     if (isWin) {
         overlay.classList.add("win");
         title.textContent = "YOU ESCAPED!";
         winBtn.style.display = "inline-block";
 
-        // Auto close after 3s
-        setTimeout(() => {
-            overlay.classList.remove("show");
-        }, 3000);
-    }
-
-    // LOSE CONDITION
+        if (!isFinal) {
+            window.winAutoCloseTimer = setTimeout(() => {
+                overlay.classList.remove("show");
+            }, 3000);
+        }
+    } 
     else {
         overlay.classList.add("lose");
         title.textContent = "YOU FAILED…";
-        restartBtn.style.display = "inline-block";
+
+        if (isFinal) {
+            restartBtn.style.display = "inline-block";
+        }
     }
 
     msg.textContent = message;
     overlay.classList.add("show");
 
-    window.gameFrozen = false;
+    if (isFinal) {
+        window.gameFrozen = true;
+    } 
+    else {
+        window.gameFrozen = false;
+    }
 }
 
-
-// Close button (WIN only)
+// Close button (puzzle win only)
 document.getElementById("win-close-btn").addEventListener("click", () => {
     document.getElementById("result-overlay").classList.remove("show");
 });
 
-// Restart button → Reloads back to start page
+// Restart button
 document.getElementById("restart-btn").addEventListener("click", () => {
     window.location.reload();
 });
@@ -197,7 +200,8 @@ function startPuzzleTimer() {
 
             showResultOverlay(
                 "You have been caught by a wrathful spirit. You are doomed now to wander the halls of the Midnight Lodge for eternity.",
-                false
+                false,
+                true
             );
 
             window.gameFrozen = true;
@@ -353,6 +357,12 @@ function mainGame() {
 
     animate(gameCanvas, player, enemyplayer);
 
+    // Show instructions under main game canvas
+     showDialogue(
+    "Behind the red door on the right lies the Lights-Out puzzle... the hotel’s broken power grid. Solve the puzzle to reactivate the elevator. A single chance to escape before the spirits reach you.\n\nInstructions: Use the arrow keys to run, and press SPACE to enter the door. Move fast… they’re closing in."
+);
+
+
      //3.) Initialize lights out grid before canvas needs opened
     lightsOutDraw(grid);
     lightsOutClick(grid, lightsCanvas);
@@ -386,37 +396,43 @@ function mainGame() {
 
          // SPACE = interact
 
-        if (event.key === " ") {
-             //If the player is at the closet door
+               if (event.key === " ") {
+
+            // Closet door → puzzle
             if (player.x > door.x - 100 && player.x < door.x + door.width + 30) {
                 openPuzzle("lightsOutCanvas");
                 doorSound.play();
                 clockSound.play();
                 setTimeout(() => clockSound.pause(), 60000);
             }
-         //If the player is at the elevator doors
+
+            // Elevator escape
             if ((player.x > 50 && player.x < 300) && keyCard === 1) {
+
                 elevatorSound.play();
                 setTimeout(() => elevatorSound.pause(), 10000);
                 music.pause();
 
-                showResultOverlay("The keycard activates… the elevator opens. You escape!", true); //new
+                showResultOverlay(
+                    "The keycard activates… the elevator opens. You escape!",
+                    true,
+                    true
+                );
+
+                window.gameFrozen = true;
+
+                const overlay = document.getElementById("result-overlay");
+                const winBtn = document.getElementById("win-close-btn");
+                const restartBtn = document.getElementById("restart-btn");
+
+                overlay.classList.add("show", "win");
+                winBtn.style.display = "none";
+                restartBtn.style.display = "inline-block";
+
+                clearTimeout(window.winAutoCloseTimer);
             }
-        }
-    });
-
-    document.addEventListener("keyup", function(event) {
-        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-            player.image = playerSpriteSheet;
-            footstepSound.pause();
-        }
-
-        ///new//
-
-        // document.querySelectorAll(".close-puzzle").forEach(btn => {
-        // btn.addEventListener("click", () => closePuzzle("lightsOutCanvas"));
-    
-    });
+        } // END spacebar
+    }); // END keydown
 }
 
 
