@@ -1,4 +1,14 @@
 
+
+// cht links:
+//  https://chatgpt.com/share/6930bec3-495c-8003-ab60-16fbf939b2ff
+//  https://chatgpt.com/share/6930bf0e-eda4-8003-8ecb-ead4c53fcf66 
+//https://chatgpt.com/share/6930c0f4-3b74-8003-91d4-f09ba1c1d66a
+//  Imagry AI use:
+// www.ludo.com for sprites and backgroun imgaes 
+// chatgpt for some background link
+
+
 let currentPuzzle = null;
 window.gameFrozen = false; //new
 

@@ -11,8 +11,7 @@ html, body {
     height: 100%;
     background: black;
     font-family: "Press Start 2P", sans-serif;
-    /*overflow: hidden; I have this commented out for now. Once all puzzles are done, I will uncommneted and eveything will fit inside the screen without
-    scrolling */
+    overflow: hidden; 
 }
 
 h1 {
@@ -135,10 +134,10 @@ canvas {
 /* PUZZLE CANVASES */
 /* PUZZLE CANVASES */
 /* PUZZLE CANVASES EXACT SIZE */
-#lightsOutCanvas,
-#slidePuzzleCanvas,
+#lightsOutCanvas
+/*#slidePuzzleCanvas,
 #riddleCanvas,
-#wordScrambleCanvas {
+#wordScrambleCanvas*/ {
     position: absolute;
     top: 40%;
     left: 50%;
@@ -154,9 +153,9 @@ canvas {
 }
 
 #lightsOutCanvas { z-index: 20; }
-#slidePuzzleCanvas { z-index: 21; }
+/*#slidePuzzleCanvas { z-index: 21; }
 #riddleCanvas { z-index: 22; }
-#wordScrambleCanvas { z-index: 23; }
+#wordScrambleCanvas { z-index: 23; }*/
 
 
 
@@ -290,16 +289,37 @@ canvas {
     font-family: "Silkscreen", sans-serif;
 }
 
+/* FOOTER */
+/* FOOTER AT BOTTOM OF START SCREEN */
+.game-footer {
+    position: absolute;
+    bottom: 2vh;       /* small gap above bottom */
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-family: "VT323", monospace;
+    font-size: clamp(0.7rem, 1vw, 1rem);
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 0 8px black;
+
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.9;
+    z-index: 60;       /* stays above background but under overlays */
+}
+
+
+
 
 
 
 /* RESPONSIVE SMALLER SCREENS */
 @media (max-width: 1280px) {
     #gameCanvas,
-    #lightsOutCanvas,
-    #slidePuzzleCanvas,
+    #lightsOutCanvas
+  /*  #slidePuzzleCanvas,
     #riddleCanvas,
-    #wordScrambleCanvas,
+    #wordScrambleCanvas,*/
     #dialog-box {
         width: 95%;
         height: auto;
@@ -308,15 +328,16 @@ canvas {
 
 
 @media (max-width: 1024px) {
-    #lightsOutCanvas,
-    #slidePuzzleCanvas,
+    #lightsOutCanvas
+/*    #slidePuzzleCanvas,
     #riddleCanvas,
-    #wordScrambleCanvas {
+    #wordScrambleCanvas*/ {
         width: 90vw;
         height: auto;
         aspect-ratio: 2 / 1;
     }
 }
+
 
 
 
