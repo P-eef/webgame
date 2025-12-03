@@ -10,9 +10,13 @@ html, body {
     width: 100%;
     height: 100%;
     background: black;
-    font-family: Arial, sans-serif;
+    font-family: "Press Start 2P", sans-serif;
     /*overflow: hidden; I have this commented out for now. Once all puzzles are done, I will uncommneted and eveything will fit inside the screen without
     scrolling */
+}
+
+h1 {
+    font-family: "Pixelify Sans", sans-serif;
 }
 
 
@@ -51,25 +55,26 @@ html, body {
     margin-bottom: 18%;
     /*background: rgba(255, 255, 255, 0.15);*/
     background: rgba(60, 0, 0, 0.20); /* subtle dark red tint */
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(14px);
     padding: 1.5% 1.5%;
-    border-radius: 18px;
+    border-radius: 16px;
     text-align: center;
     box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    width: 35%;
+    width: 40%;
 }
 
 
 .start-box h1 {
-    font-size: 2em;
+    font-size: 3em;
     color: #A2052C;
     margin-bottom: 3%;
+    margin-top: 3%;
     text-shadow: 0 0 12px black;
     font-weight: bold;
 }
 
 .start-box p {
-    font-size: 1em;
+    font-size: .8em;
     color: #eaeaea;
     margin-bottom: 2%;
     line-height: 1.6;
@@ -85,6 +90,8 @@ html, body {
     border-radius: 10px;
     cursor: pointer;
     transition: 0.2s ease;
+    font-family: "Silkscreen", sans-serif;
+    margin: 1%;
 }
 .start-btn:hover {
     background: #b10000;
@@ -164,7 +171,7 @@ canvas {
     border: 2px solid white;
     border-radius: 12px;
     padding: 18px 24px;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
 
     position: absolute;
@@ -184,7 +191,7 @@ canvas {
     background: none;
     border: none;
     color: white;
-    font-size: 22px;
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -274,11 +281,13 @@ canvas {
 #win-close-btn {
     background: #24ff24;
     color: black;
+    font-family: "Silkscreen", sans-serif;
 }
 
 #restart-btn {
     background: #ff2424;
     color: white;
+    font-family: "Silkscreen", sans-serif;
 }
 
 
