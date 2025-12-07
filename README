@@ -1,0 +1,20 @@
+MIDNIGHT LODGING HOTEL
+
+A project by Lika Tanaka, Marine Malisetyan, and JJ Moorhead
+
+Audio, Design, and Story by Lika Tanaka
+CSS, Sprites, and Imagery by Marine Malisetyan
+JS by JJ Moorhead
+
+Midnight Lodging Hotel is a sidescrolling game where the player must
+solve puzzles before they are attacked by a restless spirit. If the
+player fails to solve the puzzle in time they reach a game over, but
+if they can manage to solve the puzzles before time runs out, they
+can free the lost soul.
+
+The project is organized into separate files for the HTML, CSS, and JS
+with the JS in particular being split into files for handling the main
+gameplay loop and minigame.
+
+Running the project should be simple so long as all the files are present,
+with the index.html being the head needed to execute everything.
